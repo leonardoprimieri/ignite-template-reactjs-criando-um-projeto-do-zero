@@ -2,12 +2,22 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  font-family: 'Inter', sans-serfif;
 }
 
 :root {
-  --purple: #ff57b2;
-  --gray-100: #f8f8f8;
-  --gray-200: #d7d7d7;
-  --gray-300: #bbbbbb;
+  --highlight: #ff57b2;
+  --heading: #f8f8f8;
   --background: #1a1d23;
+  --body: #d7d7d7;
+  --info: #bbbbbb;
+}
+
+body {
+  background-color: var(--background);
+  overflow-x: hidden;
+}
+
+a {
+  text-decoration: none;
 }

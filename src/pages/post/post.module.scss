@@ -1,1 +1,31 @@
-// TODO
+.postBanner {
+  width: 100vw;
+  height: 25rem;
+}
+
+.post {
+  padding: 2rem;
+
+  h1 {
+    color: var(--heading);
+    margin: 1rem 0;
+  }
+
+  color: var(--info);
+
+  p {
+    line-height: 1.25rem;
+  }
+
+  .postInfo {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+
+    .postInfoItem {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+  }
+}
