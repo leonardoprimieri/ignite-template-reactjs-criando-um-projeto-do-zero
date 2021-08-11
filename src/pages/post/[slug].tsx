@@ -41,21 +41,21 @@ export default function Post({ post }: PostProps) {
     return <div>Carregando...</div>;
   }
 
+  const postContent = post.data.content;
+  const postBody = postContent.map(item => RichText.asText(item.body));
+  const postWords = postBody.map(item => item.split(/\s+/));
+
+  const totalPostBodyLength = postWords.map(item => item.length);
+
+  const totalPostWords = totalPostBodyLength.reduce((acc, val) => acc + val);
+  const timeToRead = Math.round(totalPostWords / 200) + ' min';
+
   return (
     <div>
       <Header />
-      <div
-        className={styles.postBanner}
-        style={{
-          background: `url(${post.data.banner.url})`,
-          backgroundPosition: 'center center',
-          backgroundSize: 'cover',
-          backgroundRepeat: 'no-repeat',
-        }}
-      />
+      <img src={post.data.banner.url} className={styles.postBanner} />
       <section className={`${commonStyles.container} ${styles.post}`}>
         <h1>{post.data.title}</h1>
-
         <div className={styles.postInfo}>
           <div className={styles.postInfoItem}>
             <FiCalendar />
@@ -66,9 +66,20 @@ export default function Post({ post }: PostProps) {
             {post.data.author}
           </div>
           <div className={styles.postInfoItem}>
-            <FiClock />6 min
+            <FiClock />
+            {timeToRead}
           </div>
         </div>
+        {post.data.content.map(({ heading, body }) => (
+          <div key={heading}>
+            {heading && <h2>{heading}</h2>}
+
+            <div
+              className={styles.postSection}
+              dangerouslySetInnerHTML={{ __html: RichText.asHtml(body) }}
+            />
+          </div>
+        ))}
       </section>
     </div>
   );
@@ -87,7 +98,10 @@ export const getStaticPaths: GetStaticPaths = async () => {
   });
 
   return {
-    paths: [{ params: { slug: 'mapas-com-react-usando-leaflet' } }],
+    paths: [
+      { params: { slug: 'mapas-com-react-usando-leaflet' } },
+      { params: { slug: 'como-utilizar-hooks' } },
+    ],
     fallback: 'blocking',
   };
 };
@@ -112,11 +126,9 @@ export const getStaticProps: GetStaticProps = async ctx => {
         url: response.data.banner.url,
       },
       author: response.data.author,
-      content: [response.data.content],
+      content: response.data.content,
     },
   };
-
-  console.log(JSON.stringify(post, null, 2));
 
   return {
     props: { post },

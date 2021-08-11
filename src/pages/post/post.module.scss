@@ -1,10 +1,15 @@
 .postBanner {
   width: 100vw;
-  height: 25rem;
+  height: 400px;
+  object-fit: cover;
 }
 
 .post {
   padding: 2rem;
+
+  h2 {
+    margin: 3rem 0;
+  }
 
   h1 {
     color: var(--heading);
@@ -14,7 +19,7 @@
   color: var(--info);
 
   p {
-    line-height: 1.25rem;
+    margin: 1rem 0;
   }
 
   .postInfo {
