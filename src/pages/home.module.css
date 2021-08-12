@@ -1,0 +1,52 @@
+.postsContainer {
+  width: 1120px;
+  margin: 0 auto;
+}
+
+.postContainer {
+  padding: 2rem;
+  margin-bottom: 2rem;
+}
+
+.postContainer h1 {
+  color: var(--heading);
+  margin-bottom: 1rem;
+  font-size: 1.75rem;
+}
+
+.postContainer p {
+  color: var(--body);
+  margin-bottom: 1rem;
+  font-size: 1.125rem;
+}
+
+.postContainer > div {
+  color: var(--info);
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  gap: 1rem;
+  font-size: 0.875rem;
+}
+
+.postContainer > div time,
+.postContainer > div div {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  gap: 0.25rem;
+}
+
+button.loadPosts {
+  background: transparent;
+  border: 0;
+  color: var(--highlight);
+  font-weight: 600;
+  font-size: 1.125rem;
+  cursor: pointer;
+  padding: 0 2rem;
+}
+/*# sourceMappingURL=home.module.css.map */

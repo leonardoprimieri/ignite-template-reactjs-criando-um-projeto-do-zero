@@ -1,0 +1,45 @@
+.postBanner {
+  width: 100vw;
+  height: 400px;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+
+.post {
+  padding: 2rem;
+  color: var(--info);
+}
+
+.post h2 {
+  margin: 3rem 0;
+}
+
+.post h1 {
+  color: var(--heading);
+  margin: 1rem 0;
+}
+
+.post p {
+  margin: 1rem 0;
+}
+
+.post .postInfo {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  gap: 1rem;
+}
+
+.post .postInfo .postInfoItem {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  gap: 0.5rem;
+}
+/*# sourceMappingURL=post.module.css.map */

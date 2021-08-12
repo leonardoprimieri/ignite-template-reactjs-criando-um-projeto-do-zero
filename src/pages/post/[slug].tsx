@@ -48,7 +48,7 @@ export default function Post({ post }: PostProps) {
   const postWords = postHeadingAndBodyWords.map(item => item.split(/\s+/));
   const totalPostBodyLength = postWords.map(item => item.length);
   const totalPostWords = totalPostBodyLength.reduce((acc, val) => acc + val);
-  const timeToRead = Math.round(totalPostWords / 200);
+  const timeToRead = Math.ceil(totalPostWords / 200);
 
   return (
     <div>
@@ -59,15 +59,19 @@ export default function Post({ post }: PostProps) {
         <div className={styles.postInfo}>
           <div className={styles.postInfoItem}>
             <FiCalendar />
-            {post.first_publication_date}
+            <span>
+              {format(new Date(post.first_publication_date), 'd MMM yyyy', {
+                locale: ptBR,
+              })}
+            </span>
           </div>
           <div className={styles.postInfoItem}>
             <FiUser />
-            {post.data.author}
+            <span>{post.data.author}</span>
           </div>
           <div className={styles.postInfoItem}>
             <FiClock />
-            <span>{timeToRead} min</span>
+            <span>{timeToRead} min </span>
           </div>
         </div>
         {post.data.content.map(({ heading, body }) => (
@@ -117,13 +121,7 @@ export const getStaticProps: GetStaticProps = async ctx => {
   const response = await prismic.getByUID('posts', String(slug), {});
 
   const post = {
-    first_publication_date: format(
-      new Date(response.first_publication_date),
-      'd MMM yyyy',
-      {
-        locale: ptBR,
-      }
-    ),
+    first_publication_date: response.first_publication_date,
     data: {
       title: response.data.title,
       banner: {
