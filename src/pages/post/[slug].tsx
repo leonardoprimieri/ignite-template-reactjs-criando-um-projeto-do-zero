@@ -91,18 +91,9 @@ export default function Post({ post }: PostProps) {
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const prismic = getPrismicClient();
-  const posts = await prismic.query(
-    [Prismic.predicates.at('document.type', 'posts')],
-    {
-      fetch: [
-        'posts.title',
-        'posts.subtitle',
-        'posts.author',
-        'posts.banner',
-        'posts.content',
-      ],
-    }
-  );
+  const posts = await prismic.query([
+    Prismic.predicates.at('document.type', 'posts'),
+  ]);
 
   const paths = posts.results.map(post => ({
     params: { slug: post.uid },
@@ -121,9 +112,11 @@ export const getStaticProps: GetStaticProps = async ctx => {
   const response = await prismic.getByUID('posts', String(slug), {});
 
   const post = {
+    uid: response.uid,
     first_publication_date: response.first_publication_date,
     data: {
       title: response.data.title,
+      subtitle: response.data.subtitle,
       banner: {
         url: response.data.banner.url,
       },
@@ -133,7 +126,6 @@ export const getStaticProps: GetStaticProps = async ctx => {
   };
 
   return {
-    props: { post },
-    revalidate: 60 * 60,
+    props: { post: post },
   };
 };
