@@ -43,12 +43,12 @@ export default function Post({ post }: PostProps) {
 
   const postContent = post.data.content;
   const postBody = postContent.map(item => RichText.asText(item.body));
-  const postWords = postBody.map(item => item.split(/\s+/));
-
+  const postHeading = postContent.map(item => item.heading);
+  const postHeadingAndBodyWords = postBody.concat(postHeading);
+  const postWords = postHeadingAndBodyWords.map(item => item.split(/\s+/));
   const totalPostBodyLength = postWords.map(item => item.length);
-
   const totalPostWords = totalPostBodyLength.reduce((acc, val) => acc + val);
-  const timeToRead = Math.round(totalPostWords / 200) + ' min';
+  const timeToRead = Math.round(totalPostWords / 200);
 
   return (
     <div>
@@ -67,12 +67,12 @@ export default function Post({ post }: PostProps) {
           </div>
           <div className={styles.postInfoItem}>
             <FiClock />
-            {timeToRead}
+            <span>{timeToRead} min</span>
           </div>
         </div>
         {post.data.content.map(({ heading, body }) => (
           <div key={heading}>
-            {heading && <h2>{heading}</h2>}
+            <h2>{heading}</h2>
 
             <div
               className={styles.postSection}
@@ -87,21 +87,25 @@ export default function Post({ post }: PostProps) {
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const prismic = getPrismicClient();
-  await prismic.query([Prismic.predicates.at('document.type', 'posts')], {
-    fetch: [
-      'posts.title',
-      'posts.subtitle',
-      'posts.author',
-      'posts.banner',
-      'posts.content',
-    ],
-  });
+  const posts = await prismic.query(
+    [Prismic.predicates.at('document.type', 'posts')],
+    {
+      fetch: [
+        'posts.title',
+        'posts.subtitle',
+        'posts.author',
+        'posts.banner',
+        'posts.content',
+      ],
+    }
+  );
+
+  const paths = posts.results.map(post => ({
+    params: { slug: post.uid },
+  }));
 
   return {
-    paths: [
-      { params: { slug: 'mapas-com-react-usando-leaflet' } },
-      { params: { slug: 'como-utilizar-hooks' } },
-    ],
+    paths,
     fallback: 'blocking',
   };
 };
@@ -132,5 +136,6 @@ export const getStaticProps: GetStaticProps = async ctx => {
 
   return {
     props: { post },
+    revalidate: 60 * 60,
   };
 };
